@@ -5,7 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.drawable.PaintDrawable;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -44,8 +48,14 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
       }
     });
 
-    sprites = new Sprite[1];
+    sprites = new Sprite[3];
     sprites[0] = new Sprite(100, 100, BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_launcher));
+    sprites[1] = new Sprite(600, 400, BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_launcher));
+    sprites[1].directionY = -1;
+    sprites[1].color = Color.RED;
+    sprites[2] = new Sprite(400, 800, BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_launcher));
+    sprites[2].directionX = -1;
+    sprites[2].color = Color.BLUE;
   }
 
   /**
@@ -79,6 +89,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     int directionX = 1;
     int directionY = 1;
     int speed = 10;
+    int color = 0;
     Bitmap image;
 
     public Sprite(int x, int y) {
@@ -103,6 +114,23 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         sprite.directionY *= -1;
       }
 
+      Rect current = new Rect(sprite.x, sprite.y,
+                              sprite.x + sprite.image.getWidth(),
+                              sprite.y + sprite.image.getHeight());
+      for (int subindex = 0; subindex < length; subindex++) {
+        if (subindex != index) {
+          Sprite subsprite = sprites[subindex];
+          Rect other = new Rect(subsprite.x, subsprite.y,
+                                subsprite.x + subsprite.image.getWidth(),
+                                subsprite.y + subsprite.image.getHeight());
+          if (Rect.intersects(current, other)) {
+            // Poor physics implementation.
+            sprite.directionX *= -1;
+            sprite.directionY *= -1;
+          }
+        }
+      }
+
       sprite.x += (sprite.directionX * sprite.speed);
       sprite.y += (sprite.directionY * sprite.speed);
     }
@@ -111,7 +139,14 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
   protected void render(Canvas canvas) {
     canvas.drawColor(Color.BLACK);
     for (int index = 0, length = sprites.length; index < length; index++) {
-      canvas.drawBitmap(sprites[index].image, sprites[index].x, sprites[index].y, null);
+      Paint p = null;
+      if (sprites[index].color != 0) {
+        p = new Paint();
+        ColorFilter filter = new LightingColorFilter(sprites[index].color, 0);
+        p.setColorFilter(filter);
+      }
+
+      canvas.drawBitmap(sprites[index].image, sprites[index].x, sprites[index].y, p);
     }
   }
 
