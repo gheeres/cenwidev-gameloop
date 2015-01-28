@@ -1,4 +1,4 @@
-[Intro To Game Develop (Part 1) - The Game Loop](http://www.meetup.com/Central-WI-Developers-Group/events/219402267/)
+[Intro To Game Development (Part 1) - The Game Loop](http://www.meetup.com/Central-WI-Developers-Group/events/219402267/)
 =====================
 ######Central Wisconsin Developers Group Presentation - 01/28/2015
 
