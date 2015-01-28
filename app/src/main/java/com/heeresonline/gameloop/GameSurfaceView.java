@@ -49,9 +49,9 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     });
 
     sprites = new Sprite[] {
-      new Sprite(100, 100, BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_launcher));
-      new Sprite(600, 400, BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_launcher), Color.RED);
-      new Sprite(400, 800, BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_launcher), Color.BLUE);
+      new Sprite(100, 100, BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_launcher)),
+      new Sprite(600, 400, BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_launcher), Color.RED),
+      new Sprite(400, 800, BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_launcher), Color.BLUE)
 	};
   }
 
